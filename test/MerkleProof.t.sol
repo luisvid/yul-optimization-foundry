@@ -13,8 +13,6 @@ contract MerkleProofTest is PRBTest, StdCheats {
     MerkleProofYul yulProof;
 
     bytes32[] private leaves;
-    // bytes32[] private proof;
-    // bytes32[] private layer;
     bytes32 public root;
 
     /**
@@ -73,24 +71,24 @@ contract MerkleProofTest is PRBTest, StdCheats {
     // Test the verification of a Merkle proof using the Solidity implementation
     function testVerifySolidity() public {
         bytes32 leaf = leaves[2]; // Data3
-        bytes32[] memory _proof = new bytes32[](2);
-        _proof[0] = leaves[3]; // Data4, sibling of Data3
-        _proof[1] = keccak256(abi.encodePacked(leaves[0], leaves[1])); // Hash of Data1 and Data2
+        bytes32[] memory proof = new bytes32[](2);
+        proof[0] = leaves[3]; // Data4, sibling of Data3
+        proof[1] = keccak256(abi.encodePacked(leaves[0], leaves[1])); // Hash of Data1 and Data2
         uint256 index = 2; // Index of Data3 in the array
 
-        bool result = solidityProof.verify(_proof, root, leaf, index);
+        bool result = solidityProof.verify(proof, root, leaf, index);
         assertTrue(result, "Solidity verification failed.");
     }
 
     // Test the verification of a Merkle proof using the Yul implementation
     function testVerifyYul() public {
         bytes32 leaf = leaves[2]; // Data3
-        bytes32[] memory _proof = new bytes32[](2);
-        _proof[0] = leaves[3]; // Data4, sibling of Data3
-        _proof[1] = keccak256(abi.encodePacked(leaves[0], leaves[1])); // Hash of Data1 and Data2
+        bytes32[] memory proof = new bytes32[](2);
+        proof[0] = leaves[3]; // Data4, sibling of Data3
+        proof[1] = keccak256(abi.encodePacked(leaves[0], leaves[1])); // Hash of Data1 and Data2
         uint256 index = 2; // Index of Data3 in the array
 
-        bool result = yulProof.verify(_proof, root, leaf, index);
+        bool result = yulProof.verify(proof, root, leaf, index);
         assertTrue(result, "Yul verification failed.");
     }
 }
